@@ -1,2 +1,2 @@
 # Snake
-Snake game descriptions for automated planning
+**Snake game descriptions for automated planning**
