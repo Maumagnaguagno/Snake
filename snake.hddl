@@ -106,7 +106,7 @@
   (:method move-long-snake
     :parameters (?snake - snake ?snakepos ?goalpos ?pos2 ?bodypos ?tailpos - location)
     :task (move ?snake ?snakepos ?goalpos)
-    :precondition (and (adjacent ?snakepos ?pos2) (not (occupied ?pos2)) (connected ?snake ?bodypos ?tailpos) (tail ?snake ?tailpos))
+    :precondition (and (adjacent ?pos2 ?snakepos) (not (occupied ?pos2)) (connected ?snake ?bodypos ?tailpos) (tail ?snake ?tailpos))
     :ordered-subtasks (and
       (move-long ?snake ?pos2 ?snakepos ?bodypos ?tailpos)
       (move ?snake ?pos2 ?goalpos)
@@ -116,7 +116,7 @@
   (:method move-short-snake
     :parameters (?snake - snake ?snakepos ?goalpos ?pos2 - location)
     :task (move ?snake ?snakepos ?goalpos)
-    :precondition (and (adjacent ?snakepos ?pos2) (not (occupied ?pos2)) (tail ?snake ?snakepos))
+    :precondition (and (adjacent ?pos2 ?snakepos) (not (occupied ?pos2)) (tail ?snake ?snakepos))
     :ordered-subtasks (and
       (move-short ?snake ?pos2 ?snakepos)
       (move ?snake ?pos2 ?goalpos)
