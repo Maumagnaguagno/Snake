@@ -89,7 +89,7 @@
   )
 
   (:method hunt_done
-    :parameters (?snake - snake ?foodpos ?snakepos - location)
+    :parameters ()
     :task (hunt)
     :precondition (forall (?pos - location) (not (mouse-at ?pos)))
     :subtasks ()
