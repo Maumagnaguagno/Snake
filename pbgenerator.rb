@@ -20,6 +20,7 @@ def generate_problem(filename)
   snake = []
   body = []
   mouses = []
+  walls = []
   IO.read(filename).each_char {|c|
     case c
     when '@'
