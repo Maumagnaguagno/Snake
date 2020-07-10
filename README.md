@@ -12,7 +12,7 @@ Currently limited to a single snake, snake body cells should be adjacent only to
 
 ## Execution
 ```
-ruby pbgenerator.rb [problem1 ... problemN]
+ruby pbgenerator.rb [pb1.snake ... pbN.snake]
 ```
 
 Convert all ``*.snake`` files in the current folder or the ones provided as arguments.
@@ -66,5 +66,6 @@ Content of output ``pb2.snake.hddl``
 
 ## ToDo's
 - Support multiple snakes
+- Support goal head position
 - Random generator
 - Support PDDL and JSHOP outputs
