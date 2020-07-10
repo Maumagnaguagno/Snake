@@ -2,10 +2,11 @@
 **Snake game descriptions for automated planning**
 
 Convert text based files to a snake problem describing a grid-based scenario with:
-- Spaces as clear cells
-- @ as snake head cell
-- $ as snake body cells
-- * as mouse cell
+- ``Space`` as clear cell
+- ``@`` as snake head cell
+- ``$`` as snake body cell
+- ``*`` as mouse cell
+- ``#`` as wall cell
 
 Currently limited to a single snake, snake body cells should be adjacent only to previous and next cells.
 

@@ -5,10 +5,11 @@
 # Mau Magnaguagno
 #-----------------------------------------------
 # Expects text based files describing a grid-based scenario with:
-# - Spaces as clear cells
+# - Space as clear cell
 # - @ as snake head cell
-# - $ as snake body cells
+# - $ as snake body cell
 # - * as mouse cell
+# - # as wall cell
 # Currently limited to a single snake, snake body cells should be adjacent only to previous and next cells
 #-----------------------------------------------
 
@@ -22,10 +23,11 @@ def generate_problem(filename)
   IO.read(filename).each_char {|c|
     case c
     when '@'
-      raise 'Double-headed snakes are not supported yet' unless snake.empty?
+      raise 'Multiple snakes are not supported yet' unless snake.empty?
       snake << [x, y]
     when '$' then body << [x, y]
     when '*' then mouses << [x, y]
+    when '#' then walls << [x, y]
     when "\n"
       if width
         raise 'Width does match previous line' if width != x
@@ -75,7 +77,7 @@ def generate_problem(filename)
 
     #{mouses.map {|x,y| "(mouse-at px#{x}y#{y})"}.join("\n    ")}
 
-    #{(snake + mouses).sort_by! {|x,y| x + y * width}.map! {|x,y| "(occupied px#{x}y#{y})"}.join("\n    ")}
+    #{(snake + mouses + walls).sort_by! {|x,y| x + y * width}.map! {|x,y| "(occupied px#{x}y#{y})"}.join("\n    ")}
 #{horizontal}
 #{vertical}
   )
