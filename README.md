@@ -14,9 +14,9 @@ All objects are either ``snake`` or ``location``.
 This removes the need to have more objects to define each mouse and snake parts.
 Removing such objects make grounding faster due to less parameters and descriptions simpler.
 Instead of having ``(at ?mouse ?location)`` we can use ``(mouse-at ?location)`` and remove the ``?mouse`` parameter from the ``strike`` action.
-If we had opted for snake parts we would have several ways of describing the same snake long snake, making an explosion in the state-space.
+If we had opted for snake parts we would have several ways of describing the same long snake, making an explosion in the state-space.
 
-# Predicates
+## Predicates
 - ``(occupied ?pos - location)``: A location is occupied, used to avoid overlapping objects during movement actions.
 - ``(adjacent ?pos1 ?pos2 - location)``: Two location are adjacent, used to constrain the range of actions.
 - ``(head ?snake - snake ?headpos - location)``: A snake head is at this location, used to constrain the range of actions, updated after every action.
