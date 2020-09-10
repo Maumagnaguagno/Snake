@@ -1,14 +1,15 @@
 # Snake
 **Snake game descriptions for automated planning**
 
-# Domain
+## Domain
 Based on the [game genre](https://en.wikipedia.org/wiki/Snake_(video_game_genre)) of the same name, very common among Nokia cellphones.
 One or more snakes can either move to clear locations or strike/attack a nearby mice in a grid/graph-based scenario, the mice do not move as they are too afraid.
 Each snake occupies one or more adjacent locations due to their long body.
 The goal is to hunt all the mice or have the snakes occupying certain positions (which forces them to eat and grow).
-Multiple plans may exist in some scenarios due to multiple snakes being able to strike mouses in different orderings using different paths.
+Multiple plans may exist in some scenarios due to multiple snakes being able to strike mice in different orderings using different paths.
 Plans contain zero or more movement actions and one strike per mouse in the problem instance.
 Differently from the game where usually only one mouse is visible at a time, all mice are visible to give more choice, making problems harder.
+This domain was motivated by the creative way in which one can describe the snake actions without updating all the snake parts and the little amount of objects required to describe a snake.
 
 ## Types
 All objects are either ``snake`` or ``location``.
@@ -30,6 +31,7 @@ If we had opted for snake parts we would have several ways of describing the sam
 - ``(:action move-short :parameters (?snake - snake ?nextpos ?snakepos - location))``: represents movement of single cell snakes.
 - ``(:action move-long :parameters  (?snake - snake ?nextpos ?headpos ?bodypos ?tailpos - location))``: represents movement or more than one cell snakes.
 
+Move was split in two to minimize the amount of grounded actions without the use of disjunctions.
 The JSHOP version contains explicit ``visit/unvisit`` operators to avoid infinite loops.
 
 ## Tasks and Methods
@@ -49,14 +51,27 @@ Here we have a base method and two recursive ones to use the ``move-long`` and `
 The ``move-base`` case is described first to avoid redundant expansions in planners that follow the description order.
 The ``move-short`` case is described after the ``move-short`` case as it is less common.
 
-``
+```
 (:task move :parameters (?snake - snake ?snakepos ?goalpos - location))
 (:method move-base :parameters (?snake - snake ?snakepos ?goalpos - location))
 (:method move-long-snake  :parameters (?snake - snake ?snakepos ?goalpos ?pos2 ?bodypos ?tailpos - location))
 (:method move-short-snake :parameters (?snake - snake ?snakepos ?goalpos ?pos2 - location))
-``
+```
 
-# Problems
+## Problems
+Each problem contains snakes and locations as objects.
+Each snake must contain at least a head and tail described in the initial state.
+If head and tail are on the same location, single cell snake, there is no need to ``connect`` snake parts.
+Each mouse location must be described in the initial state.
+Locations that contain snake parts, mice or walls are ``occupied``.
+Locations must be ``adjacent`` to one another to describe possible paths.
+Adjacencies are usually symmetrical, ``(adjacent l1 l2) (adjacent l2 l1)``, and grid-based, but are not limited to.
+
+For goal-based planning it may include snakes final configuration and mice not existing anymore.
+For task-based planning it may include movement and hunting tasks.
+Due to the possibly large amount of mice, it is recommended to use ``forall`` or ``exist`` to describe a goal without mice or tasks to hunt every mouse.
+
+### Problem generator
 Currently a text representation, like the one from [Sokoban](http://www.sokobano.de/wiki/index.php?title=Level_format), can be used with our problem generator.
 Each character in a text file represents one element of the Snake problem in a grid-based scenario:
 - ``Space`` as clear cell
@@ -65,16 +80,18 @@ Each character in a text file represents one element of the Snake problem in a g
 - ``*`` as mouse cell
 - ``#`` as wall cell
 
-Currently limited to a single snake, snake body cells should be adjacent only to previous and next cells to avoid ambiguity.
+Currently limited to a single snake, snake parts should be adjacent only to previous and next cells to avoid ambiguity.
+Walls are converted to always occupied cells, could also be represented as lack of adjacencies to these cells, which would be harder to manually modify later.
+Multiple problems in this format are already available, they were manually crafted to generate longer solutions or force certain paths for the snake to be able to strike all mice.
 
-## Execution
+#### Execution
 ```
 ruby pbgenerator.rb [pb1.snake ... pbN.snake]
 ```
 
-Convert all ``*.snake`` files in the current folder or the ones provided as arguments.
+Convert all ``*.snake`` files in the current folder or the ones provided as arguments to ``*.snake.hddl`` files.
 
-## Example
+#### Example
 ```
 ruby pbgenerator.rb pb2.snake
 ```
