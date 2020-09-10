@@ -5,12 +5,12 @@
 # Mau Magnaguagno
 #-----------------------------------------------
 # Expects text based files describing a grid-based scenario with:
-# - Space as clear cell
-# - @ as snake head cell
-# - $ as snake body cell
-# - * as mouse cell
-# - # as wall cell
-# Currently limited to a single snake, snake body cells should be adjacent only to previous and next cells
+# - Space as clear location
+# - @ as snake head location
+# - $ as snake body location
+# - * as mouse location
+# - # as wall location
+# Currently limited to a single snake, snake body locations should be adjacent only to previous and next locations
 #-----------------------------------------------
 
 def generate_problem(filename)
@@ -41,7 +41,7 @@ def generate_problem(filename)
   }
   raise 'Missing snake head @ in problem file' unless snake
 
-  # Connect body cells to snake
+  # Connect body locations to snake
   until body.empty?
     unless body.reject! {|b| snake << b if snake[-1][0] == b[0] && (snake[-1][1] - b[1]).abs == 1 or (snake[-1][0] - b[0]).abs == 1 && snake[-1][1] == b[1]}
       raise 'Disconnected snake body part'
