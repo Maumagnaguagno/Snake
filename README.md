@@ -28,8 +28,8 @@ If we had opted for snake parts we would have several ways of describing the sam
 
 ## Actions/Operators
 - ``(:action strike :parameters (?snake - snake ?headpos ?foodpos - location))``: represents the mouse being attacked by an adjacent snake head.
-- ``(:action move-short :parameters (?snake - snake ?nextpos ?snakepos - location))``: represents movement of single cell snakes.
-- ``(:action move-long :parameters  (?snake - snake ?nextpos ?headpos ?bodypos ?tailpos - location))``: represents movement or more than one cell snakes.
+- ``(:action move-short :parameters (?snake - snake ?nextpos ?snakepos - location))``: represents single location snake movement.
+- ``(:action move-long :parameters  (?snake - snake ?nextpos ?headpos ?bodypos ?tailpos - location))``: represents multiple location snake movement.
 
 Move was split in two to minimize the amount of grounded actions without the use of disjunctions.
 The JSHOP version contains explicit ``visit/unvisit`` operators to avoid infinite loops.
@@ -61,7 +61,7 @@ The ``move-short`` case is described after the ``move-short`` case as it is less
 ## Problems
 Each problem contains snakes and locations as objects.
 Each snake must contain at least a head and tail described in the initial state.
-If head and tail are on the same location, single cell snake, there is no need to ``connect`` snake parts.
+If head and tail are on the same location, single location snake, there is no need to ``connect`` snake parts.
 Each mouse location must be described in the initial state.
 Locations that contain snake parts, mice or walls are ``occupied``.
 Locations must be ``adjacent`` to one another to describe possible paths.
@@ -74,14 +74,14 @@ Due to the possibly large amount of mice, it is recommended to use ``forall`` or
 ### Problem generator
 Currently a text representation, like the one from [Sokoban](http://www.sokobano.de/wiki/index.php?title=Level_format), can be used with our problem generator.
 Each character in a text file represents one element of the Snake problem in a grid-based scenario:
-- ``Space`` as clear cell
-- ``@`` as snake head cell
-- ``$`` as snake body cell
-- ``*`` as mouse cell
-- ``#`` as wall cell
+- ``Space`` as clear location
+- ``@`` as snake head location
+- ``$`` as snake body location
+- ``*`` as mouse location
+- ``#`` as wall location
 
-Currently limited to a single snake, snake parts should be adjacent only to previous and next cells to avoid ambiguity.
-Walls are converted to always occupied cells, could also be represented as lack of adjacencies to these cells, which would be harder to manually modify later.
+Currently limited to a single snake, snake parts should be ``adjacent`` only to previous and next locations to avoid ambiguity.
+Walls are converted to always ``occupied`` locations, could also be represented as lack of adjacencies to these locations, which would be harder to manually modify later.
 Multiple problems in this format are already available, they were manually crafted to generate longer solutions or force certain paths for the snake to be able to strike all mice.
 
 #### Execution
