@@ -91,8 +91,8 @@ Multiple problems in this format are already available, they were manually craft
 ruby pbgenerator.rb type [pb1.snake ... pbN.snake]
 ```
 
-Convert all ``*.snake`` files in the current folder or the ones provided as arguments to ``*.snake.type`` files.
-Type can be ``pddl``, ``hddl`` or ``jshop``.
+Convert all ``*.snake`` files in the current folder or the ones provided as arguments according to ``type``, generating ``*.snake.type`` files.
+Type includes ``pddl``, ``hddl`` or ``jshop``.
 
 #### Example
 ```
