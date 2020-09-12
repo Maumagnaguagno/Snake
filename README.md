@@ -88,14 +88,15 @@ Multiple problems in this format are already available, they were manually craft
 
 #### Execution
 ```
-ruby pbgenerator.rb [pb1.snake ... pbN.snake]
+ruby pbgenerator.rb type [pb1.snake ... pbN.snake]
 ```
 
-Convert all ``*.snake`` files in the current folder or the ones provided as arguments to ``*.snake.hddl`` files.
+Convert all ``*.snake`` files in the current folder or the ones provided as arguments to ``*.snake.type`` files.
+Type can be ``pddl``, ``hddl`` or ``jshop``.
 
 #### Example
 ```
-ruby pbgenerator.rb pb2.snake
+ruby pbgenerator.rb hddl pb2.snake
 ```
 
 Content of input ``pb2.snake``
@@ -142,6 +143,5 @@ Content of output ``pb2.snake.hddl``
 
 ## ToDo's
 - Support multiple snakes
-- Support goal head position
+- Support snake goal position
 - Random generator
-- Support PDDL and JSHOP outputs

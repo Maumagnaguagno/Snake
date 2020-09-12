@@ -13,7 +13,36 @@
 # Currently limited to a single snake, snake body locations should be adjacent only to previous and next locations
 #-----------------------------------------------
 
-def generate_problem(filename)
+PDDL_HDDL_TEMPLATE = "(define (problem <PROBLEM_NAME>)
+  (:domain snake)\n
+  (:objects
+    viper - snake<LOCATIONS> - location
+  )\n
+  (:init
+    (head viper <HEAD>)
+    <CONNECTED>
+    (tail viper <TAIL>)\n
+    <MOUSE-AT>\n
+    <OCCUPIED>\n<HORIZONTAL>\n<VERTICAL>
+  )\n
+  <GOAL_TASK>
+)"
+
+JSHOP_TEMPLATE = "(defproblem <PROBLEM_NAME> snake
+  (;init
+    (snake viper)<LOCATIONS>
+    (head viper <HEAD>)
+    <CONNECTED>
+    (tail viper <TAIL>)\n
+    <MOUSE-AT>\n
+    <OCCUPIED>\n<HORIZONTAL>\n<VERTICAL>
+  )
+  (;task
+    (hunt)
+  )
+)"
+
+def generate_problem(type, filename, template)
   # Parsing
   x = y = 0
   width = nil
@@ -24,14 +53,14 @@ def generate_problem(filename)
   IO.read(filename).each_char {|c|
     case c
     when '@'
-      raise 'Multiple snakes are not supported yet' unless snake.empty?
+      abort("Multiple snakes in #{filename}") unless snake.empty?
       snake << [x, y]
     when '$' then body << [x, y]
     when '*' then mouses << [x, y]
     when '#' then walls << [x, y]
     when "\n"
       if width
-        raise 'Width does match previous line' if width != x
+        abort("Width does match previous line in #{filename}") if width != x
       else width = x
       end
       x = -1
@@ -39,12 +68,12 @@ def generate_problem(filename)
     end
     x += 1
   }
-  raise 'Missing snake head @ in problem file' unless snake
+  abort("Missing snake head @ in #{filename}") unless snake
 
   # Connect body locations to snake
   until body.empty?
     unless body.reject! {|b| snake << b if snake[-1][0] == b[0] && (snake[-1][1] - b[1]).abs == 1 or (snake[-1][0] - b[0]).abs == 1 && snake[-1][1] == b[1]}
-      raise 'Disconnected snake body part'
+      abort("Disconnected snake body part in #{filename}")
     end
   end
 
@@ -63,28 +92,35 @@ def generate_problem(filename)
   }
 
   # Compile
-  IO.binwrite("#{filename}.hddl",
-"(define (problem #{File.basename(filename, '.*')})
-  (:domain snake)
-
-  (:objects
-    viper - snake#{locations} - location
-  )
-
-  (:init
-    (head viper px#{snake[0][0]}y#{snake[0][1]})
-    #{snake.each_cons(2).map {|(x1,y1),(x2,y2)| "(connected viper px#{x1}y#{y1} px#{x2}y#{y2})"}.join("\n    ")}
-    (tail viper px#{snake[-1][0]}y#{snake[-1][1]})
-
-    #{mouses.map {|x,y| "(mouse-at px#{x}y#{y})"}.join("\n    ")}
-
-    #{(snake + mouses + walls).sort_by! {|x,y| x + y * width}.map! {|x,y| "(occupied px#{x}y#{y})"}.join("\n    ")}
-#{horizontal}
-#{vertical}
-  )
-
-  (:htn :subtasks (hunt))
-)")
+  template.sub!('<PROBLEM_NAME>', File.basename(filename, '.*'))
+  template.sub!('<HEAD>', "px#{snake[0][0]}y#{snake[0][1]}")
+  template.sub!('<CONNECTED>', snake.each_cons(2).map {|(x1,y1),(x2,y2)| "(connected viper px#{x1}y#{y1} px#{x2}y#{y2})"}.join("\n    "))
+  template.sub!('<TAIL>', "px#{snake[-1][0]}y#{snake[-1][1]}")
+  template.sub!('<MOUSE-AT>', mouses.map {|x,y| "(mouse-at px#{x}y#{y})"}.join("\n    "))
+  template.sub!('<OCCUPIED>', (snake + mouses + walls).sort_by! {|x,y| x + y * width}.map! {|x,y| "(occupied px#{x}y#{y})"}.join("\n    "))
+  template.sub!('<HORIZONTAL>', horizontal)
+  template.sub!('<VERTICAL>', vertical)
+  case type
+  when 'pddl'
+    template.sub!('<LOCATIONS>', locations)
+    template.sub!('<GOAL_TASK>', "(:goal (and#{mouses.map {|x,y| "\n    (not (mouse-at px#{x}y#{y}))"}.join}\n  ))")
+  when 'hddl'
+    template.sub!('<LOCATIONS>', locations)
+    template.sub!('<GOAL_TASK>', '(:htn :subtasks (hunt))')
+  else
+    template.sub!('<LOCATIONS>', locations.gsub!(/(\S+)/, '(location \1)'))
+  end
+  IO.binwrite("#{filename}.#{type}", template)
 end
 
-(ARGV.empty? ? Dir.glob('*.snake') : ARGV).each {|filename| generate_problem(filename)}
+#-----------------------------------------------
+# Main
+#-----------------------------------------------
+if $0 == __FILE__
+  case type = ARGV.shift
+  when 'pddl', 'hddl' then template = PDDL_HDDL_TEMPLATE
+  when 'jshop' then template = JSHOP_TEMPLATE
+  else abort('ruby pbgenerator.rb type [pb1.snake ... pbN.snake]')
+  end
+  (ARGV.empty? ? Dir.glob('*.snake') : ARGV).each {|filename| generate_problem(type, filename, template.dup)}
+end
