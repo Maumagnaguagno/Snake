@@ -3,7 +3,7 @@
 
 The Snake domain is based on the [homonymous game genre](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), in which one or more snakes can either move to clear locations or strike a nearby mice in a grid/graph-based scenario, the mice do not move as they are too afraid.
 Each snake occupies one or more adjacent locations due to their long body.
-The goal is to hunt all the mice or have the snakes occupying certain positions (which forces them to eat and grow).
+The goal is to hunt all the mice or have the snakes occupying certain locations (which forces them to eat and grow).
 Multiple plans may exist in some scenarios due to multiple snakes being able to strike mice in different orderings using different paths.
 Plans contain zero or more movement actions and one strike per mouse in the problem instance.
 Differently from the game where usually only one mouse is visible at a time, all mice are visible to give more choice, making problems harder.
@@ -49,7 +49,7 @@ The base case is described after the recursive as it happens only once, when all
 (:method hunt_done :parameters ())
 ```
 
-The second task is ``move``, with a snake, its head and goal position as parameters.
+The second task is ``move``, with a snake, its head and goal location as parameters.
 Here we have a base method and two recursive ones to use the ``move-long`` and ``move-short`` actions.
 The ``move-base`` case is described first to avoid redundant expansions in planners that follow the description order.
 The ``move-short`` is the last case described as it is less common.
@@ -144,5 +144,5 @@ Content of output ``pb2.snake.hddl``
 
 ## ToDo's
 - Support multiple snakes
-- Support snake goal position
+- Support snake goal locations
 - Random generator
