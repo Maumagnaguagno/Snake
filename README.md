@@ -11,6 +11,7 @@ This domain was motivated by the creative way in which one can describe the snak
 
 ## Domain
 The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in PDDL, and also ``:method-precondition`` and ``:universal-preconditions`` in HDDL.
+The JSHOP domain implicitly have the same HDDL requirements.
 Universal preconditions are used to verify that every location does not contain a mouse and the hunting task is complete.
 
 ## Types
@@ -92,7 +93,7 @@ ruby pbgenerator.rb type [pb1.snake ... pbN.snake]
 ```
 
 Convert all ``*.snake`` files in the current folder or the ones provided as arguments according to ``type``, generating ``*.snake.type`` files.
-Type includes ``pddl``, ``hddl`` or ``jshop``.
+Type includes ``pddl``, ``hddl`` and ``jshop``.
 
 #### Example
 ```
