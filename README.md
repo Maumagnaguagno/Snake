@@ -11,7 +11,7 @@ This domain was motivated by the creative way in which one can describe the snak
 
 ## Domain
 The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in PDDL, and also ``:method-precondition`` and ``:universal-preconditions`` in HDDL.
-The JSHOP domain implicitly have the same HDDL requirements.
+The JSHOP domain implicitly has the same HDDL requirements.
 Universal preconditions are used to verify that every location does not contain a mouse and the hunting task is complete.
 
 ## Types
@@ -19,7 +19,7 @@ All objects are either ``snake`` or ``location``.
 This removes the need to have more objects to define each mouse and snake parts.
 Removing such objects make grounding faster due to less parameters and descriptions simpler.
 Instead of having ``(at ?mouse ?location)`` we can use ``(mouse-at ?location)`` and remove the ``?mouse`` parameter from the ``strike`` action.
-If we had opted for snake parts we would have several ways of describing the same long snake, making an explosion in the state-space.
+If we had opted for snake parts we would have several ways of describing the same long snake, causing an explosion in the state-space.
 
 ## Predicates
 - ``(occupied ?pos - location)``: A location is occupied, used to avoid overlapping objects during movement actions.
@@ -38,10 +38,10 @@ Move was split in two to minimize the amount of grounded actions without the use
 The JSHOP version contains explicit ``visit/unvisit`` operators to avoid infinite loops.
 
 ## Tasks and Methods
-Two tasks are described in the JSHOP and HDDL versions, with 5 methods.
+Two tasks are described in the JSHOP and HDDL versions, with 5 methods in total.
 The first task is ``hunt``, with zero parameters, used as the main task.
 Two methods are used for this task, a recursive one to select one snake that will strike a mouse, and a base one for no more mice.
-The base case is described after the recursive as it happens only once, when all mice have been consumed.
+The base case is described after the recursive method as it happens only once, when all mice have been consumed.
 
 ```
 (:task hunt :parameters ())
@@ -70,7 +70,7 @@ Locations that contain snake parts, mice or walls are ``occupied``.
 Locations must be ``adjacent`` to one another to describe possible paths.
 Adjacencies are usually symmetrical, ``(adjacent l1 l2) (adjacent l2 l1)``, and grid-based, but are not limited to.
 
-For goal-based planning it may include snakes final configuration and mice not existing anymore.
+For goal-based planning it may include snakes' final configuration and mice not existing anymore.
 For task-based planning it may include movement and hunting tasks.
 Due to the possibly large amount of mice, it is recommended to use ``forall`` or ``exist`` to describe a goal state without mice or tasks to hunt every mouse.
 
@@ -84,7 +84,7 @@ Each character in a text file represents one element of the Snake problem in a g
 - ``#`` as wall location
 
 Currently limited to a single snake, snake parts should be ``adjacent`` only to previous and next locations to avoid ambiguity.
-Walls are converted to always ``occupied`` locations, could also be represented as lack of adjacencies to these locations, which would be harder to manually modify later.
+Walls are converted to always ``occupied`` locations, but could also be represented as lack of adjacencies to these locations, which would be harder to manually modify later.
 Multiple problems in this format are already available, they were manually crafted to generate longer solutions or force certain paths for the snake to be able to strike all mice.
 
 #### Execution
