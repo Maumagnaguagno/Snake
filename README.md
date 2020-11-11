@@ -10,7 +10,7 @@ Differently from the game where usually only one mouse is visible at a time, all
 This domain was motivated by the creative way in which one can describe the snake actions without updating all the snake parts and the little amount of objects required to describe a snake.
 
 ## Domain
-The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in PDDL, and also ``:method-precondition`` and ``:universal-preconditions`` in HDDL.
+The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in PDDL, and also ``:method-preconditions`` and ``:universal-preconditions`` in HDDL.
 The JSHOP domain implicitly has the same HDDL requirements.
 Universal preconditions are used to verify that every location does not contain a mouse and the hunting task is complete.
 
