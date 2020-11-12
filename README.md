@@ -8,16 +8,18 @@ Multiple plans may exist in some scenarios due to multiple snakes being able to 
 Plans contain zero or more movement actions and one strike per mouse in the problem instance.
 Differently from the game where usually only one mouse is visible at a time, all mice are visible to give more choice, making problems harder.
 This domain was motivated by the creative way in which one can describe the snake actions without updating all the snake parts and the little amount of objects required to describe a snake.
+It includes [PDDL], [HDDL] and [JSHOP] descriptions and a problem generator.
+The HDDL version was one of the [HTN IPC 2020 domains](https://github.com/panda-planner-dev/ipc2020-domains).
 
 ## Domain
-The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in PDDL, and also ``:method-preconditions`` and ``:universal-preconditions`` in HDDL.
-The JSHOP domain implicitly has the same HDDL requirements.
+The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in [PDDL], and also ``:method-preconditions`` and ``:universal-preconditions`` in [HDDL].
+The [JSHOP] domain implicitly has the same [HDDL] requirements.
 Universal preconditions are used to verify that every location does not contain a mouse and the hunting task is complete.
 
 ## Types
 All objects are either ``snake`` or ``location``.
 This removes the need to have more objects to define each mouse and snake parts.
-Removing such objects make grounding faster due to less parameters and descriptions simpler.
+Removing such objects makes descriptions simpler and grounding faster due to fewer parameters.
 Instead of having ``(at ?mouse ?location)`` we can use ``(mouse-at ?location)`` and remove the ``?mouse`` parameter from the ``strike`` action.
 If we had opted for snake parts we would have several ways of describing the same long snake, causing an explosion in the state-space.
 
@@ -38,7 +40,7 @@ Move was split in two to minimize the amount of grounded actions without the use
 The JSHOP version contains explicit ``visit/unvisit`` operators to avoid infinite loops.
 
 ## Tasks and Methods
-Two tasks are described in the JSHOP and HDDL versions, with 5 methods in total.
+Two tasks are described in the [JSHOP] and [HDDL] versions, with 5 methods in total.
 The first task is ``hunt``, with zero parameters, used as the main task.
 Two methods are used for this task, a recursive one to select one snake that will strike a mouse, and a base one for no more mice.
 The base case is described after the recursive method as it happens only once, when all mice have been consumed.
@@ -146,3 +148,7 @@ Content of output ``pb2.snake.hddl``
 - Support multiple snakes
 - Support snake goal locations
 - Random generator
+
+[PDDL]: https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language "PDDL at Wikipedia"
+[HDDL]: http://gki.informatik.uni-freiburg.de/papers/hoeller-etal-aaai20.pdf "HDDL paper"
+[JSHOP]: https://www.cs.umd.edu/projects/shop/description.html "SHOP/JSHOP project page"
