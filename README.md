@@ -10,6 +10,7 @@ Differently from the game where usually only one mouse is visible at a time, all
 This domain was motivated by the creative way in which one can describe the snake actions without updating all the snake parts and the little amount of objects required to describe a snake.
 It includes [PDDL], [HDDL] and [JSHOP] descriptions and a problem generator.
 The HDDL version was one of the [HTN IPC 2020 domains](https://github.com/panda-planner-dev/ipc2020-domains).
+You can read more about the HTN IPC planners and domains in the [IPC proceedings](https://gki.informatik.uni-freiburg.de/competition/proceedings.pdf).
 
 ## Domain
 The domain requires ``:typing``, ``:equality`` and ``:negative-preconditions`` in [PDDL], and also ``:method-preconditions`` and ``:universal-preconditions`` in [HDDL].
@@ -79,11 +80,11 @@ Due to the possibly large amount of mice, it is recommended to use ``forall`` or
 ### Problem generator
 Currently a text representation, like the one from [Sokoban](http://www.sokobano.de/wiki/index.php?title=Level_format), can be used with our problem generator.
 Each character in a text file represents one element of the Snake problem in a grid-based scenario:
-- ``Space`` as clear location
-- ``@`` as snake head location
-- ``$`` as snake body location
-- ``*`` as mouse location
-- ``#`` as wall location
+- <kbd>Space</kbd> as clear location
+- <kbd>@</kbd> as snake head location
+- <kbd>$</kbd> as snake body location
+- <kbd>*</kbd> as mouse location
+- <kbd>#</kbd> as wall location
 
 Currently limited to a single snake, snake parts should be ``adjacent`` only to previous and next locations to avoid ambiguity.
 Walls are converted to always ``occupied`` locations, but could also be represented as lack of adjacencies to these locations, which would be harder to manually modify later.
