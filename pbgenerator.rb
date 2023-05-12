@@ -50,7 +50,7 @@ def generate_problem(type, filename, template)
   body = []
   mouses = []
   walls = []
-  IO.read(filename).each_char {|c|
+  File.read(filename).each_char {|c|
     case c
     when '@'
       abort("Multiple snakes in #{filename}") unless snake.empty?
@@ -110,7 +110,7 @@ def generate_problem(type, filename, template)
   else
     template.sub!('<LOCATIONS>', locations.gsub!(/(\S+)/, '(location \1)'))
   end
-  IO.binwrite("#{filename}.#{type}", template)
+  File.binwrite("#{filename}.#{type}", template)
 end
 
 #-----------------------------------------------
