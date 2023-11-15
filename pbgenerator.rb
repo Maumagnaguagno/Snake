@@ -68,7 +68,7 @@ def generate_problem(type, filename, template)
     end
     x += 1
   }
-  abort("Missing snake head @ in #{filename}") unless snake
+  abort("Missing snake head @ in #{filename}") if snake.empty?
 
   # Connect body locations to snake
   until body.empty?
