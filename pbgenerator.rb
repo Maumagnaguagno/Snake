@@ -102,14 +102,13 @@ def generate_problem(type, filename, template)
   template.sub!('<VERTICAL>', vertical)
   case type
   when 'pddl'
-    template.sub!('<LOCATIONS>', locations)
     template.sub!('<GOAL_TASK>', "(:goal (and#{mouses.map {|x,y| "\n    (not (mouse-at px#{x}y#{y}))"}.join}\n  ))")
   when 'hddl'
-    template.sub!('<LOCATIONS>', locations)
     template.sub!('<GOAL_TASK>', '(:htn :subtasks (hunt))')
   else
-    template.sub!('<LOCATIONS>', locations.gsub!(/(\S+)/, '(location \1)'))
+    locations.gsub!(/(\S+)/, '(location \1)')
   end
+  template.sub!('<LOCATIONS>', locations)
   File.binwrite("#{filename}.#{type}", template)
 end
 
