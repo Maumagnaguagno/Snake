@@ -18,7 +18,6 @@
       (head ?snake ?headpos)
       (mouse-at ?foodpos)
       (adjacent ?foodpos ?headpos)
-      (not (= ?headpos ?foodpos))
     )
     :effect (and
       (not (mouse-at ?foodpos))
